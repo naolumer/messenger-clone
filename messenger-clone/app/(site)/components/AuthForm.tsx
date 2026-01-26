@@ -3,6 +3,8 @@ import Input from "@/app/components/inputs/Input";
 import { useCallback, useState } from "react"
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Button from "@/app/components/Button";
+import AuthSocialButton from "./AuthSocialButton";
+import { BsGithub } from "react-icons/bs";
 
 type Variant = "LOGIN" | "REGISTER"
 
@@ -108,7 +110,10 @@ function AuthForm() {
                     <div className="relative flex justify-center text-sm">
                         <span className="bg-white px-2 text-gray-500">Or continue with</span>
                     </div>
+                </div>
 
+                <div className="mt-6 flex gap-2">
+                    <AuthSocialButton icon = {BsGithub}/>
                 </div>
 
             </div>
