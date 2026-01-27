@@ -15,8 +15,8 @@ export default function Home() {
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
             <Image
                 alt = "Logo"
-                height = "65"
-                width= "65"
+                height = "60"
+                width= "60"
                 className="mx-auto w-auto"
                 src = "/Images/logo.png"
             />
