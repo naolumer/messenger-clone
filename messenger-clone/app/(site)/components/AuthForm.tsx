@@ -68,7 +68,16 @@ function AuthForm() {
     const socialAction  = (action:string) => {
         setIsLoading(true);
 
-        // NextAuth Social Sign In
+        signIn(action, {redirect: false})
+        .then((callback)=>{
+            if(callback?.error) {
+                toast.error('Invalid Credentials')
+            }
+            if (callback?.ok && !callback?.error){
+                toast.success('Loggedi in!')
+            }
+        })
+        .finally(()=>setIsLoading(false))
     }
 
   return (
