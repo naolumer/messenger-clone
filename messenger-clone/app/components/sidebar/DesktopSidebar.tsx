@@ -3,6 +3,7 @@ import useRoutes from "@/app/hooks/useRoute"
 import { useState } from "react";
 import DesktopItem from "./DesktopItem";
 import { User } from "@prisma/client";
+import Avatar from "../Avatar";
 
 interface DesktopSidebarProps {
     currentUser: User
@@ -54,7 +55,7 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
 
             <nav className="mt-4 flex flex-col items-center justify-between">
                 <div className="cursor-pointer hover:opacity-75 transition ">
-                    <Avatar user = {currentUserUser}/>
+                    <Avatar user = {currentUser}/>
                 </div>
 
             </nav>
