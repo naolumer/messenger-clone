@@ -1,11 +1,11 @@
 "use client"
+import clsx from "clsx"
 import { useCallback } from "react"
 import { useMemo } from "react"
 import { useRouter } from "next/navigation"
 import {Conversation, Message, User} from '@prisma/client'
 import {format} from "date-fns"
 import { useSession } from "next-auth/react"
-import clsx from "clsx"
 import { FullConversationType } from "@/app/types"
 import useOtherUser from "@/app/hooks/useOtherUser"
 import Avatar from "@/app/components/Avatar"
@@ -48,7 +48,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
             return false;
         }
         return seenArray.filter((user)=> user.email=== userEmail).length !==0;
-     },[userEmail, lastMessage]);
+     },[userEmail, lastMessage])
 
      const lastMessageText = useMemo(()=> {
         if (lastMessage?.image) {
@@ -64,17 +64,18 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
         <div 
             onClick={handleClick}
             className={clsx(`
-            w-full
-            relative
-            flex
-            items-center
-            space-x-3
-            hover:bg-neutral-100
-            rounded-lg
-            transition
-            cursor-pointer
-            `,
-            selected ? 'bg-neutral-100':'bg-white')}>
+                w-full
+                relative
+                flex
+                items-center
+                space-x-3
+                hover:bg-neutral-100
+                rounded-lg
+                transition
+                cursor-pointer
+                `,
+                selected ? 'bg-neutral-100':'bg-white')}>
+            
             <Avatar user= {otherUser}/>
             <div className="min-w-0 flex-1">
                 <div className="focus:outline-none">
@@ -84,14 +85,14 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
                         font-medium
                         text-gray-900">{data.name || otherUser.name}
                         </p>
-                        {lastMessage?.createdAt && (
+                        {lastMessage?.creartedAt && (
                             <p className="
                                 text-xs
                                 text-gray-400
                                 font-light">
                                 {format(new Date(lastMessage.createdAt), 'p')}
                             </p>
-                        )};
+                        )}
                     </div>
                     <p className={clsx(`
                         truncate
