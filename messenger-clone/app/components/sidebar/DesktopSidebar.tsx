@@ -1,4 +1,5 @@
 'use client'
+
 import useRoutes from "@/app/hooks/useRoute"
 import { useState } from "react";
 import DesktopItem from "./DesktopItem";
@@ -13,6 +14,7 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
 }) => {
     const routes = useRoutes();
     const [isOPen, setIsOpen] = useState(false);
+    
     return (
         <div className="
             hidden
@@ -40,6 +42,7 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
                         
                 <ul role="list"
                 className="flex flex-col items-center space-y-1">
+                
                 {routes.map((item)=> (
                     <DesktopItem 
                         key= {item.label}
