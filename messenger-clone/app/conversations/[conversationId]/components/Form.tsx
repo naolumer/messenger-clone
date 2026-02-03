@@ -31,6 +31,7 @@ const Form = () => {
     }
     return (
         <div className="py-4 px-4 bg-white border-t border-gray-300 flex items-center gap-2 lg:gap-4 w-full">
+            
            <HiPhoto size={30} className="text-sky-500"/>
            <form
             onSubmit={handleSubmit(onSubmit)} 
