@@ -34,7 +34,7 @@ const ConversationId = async ({
     <div className="lg:pl-80 h-full">
       <div className="h-full flex flex-col">
         <Header conversation = {conversation}/>
-        <Body/>
+        <Body initialMessages = {messages}/>
         <Form/>
       </div>
     </div>
