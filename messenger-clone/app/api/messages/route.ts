@@ -13,7 +13,7 @@ export async function POST(request : Request) {
             conversationId
         } = body;
 
-        if (!currentUser?.id || currentUser?.email){
+        if (!currentUser?.id || !currentUser?.email){
             return new NextResponse('Unauthorized', {status:401});
         }
 
@@ -23,7 +23,7 @@ export async function POST(request : Request) {
                 image: image,
                 conversation:{
                     connect: {
-                        id: currentUser.id
+                        id: conversationId
                     }
                 },
                 sender: {
@@ -66,9 +66,9 @@ export async function POST(request : Request) {
             }
         });
          
-        return new NextResponse.json(newMessage)
+        return NextResponse.json(newMessage)
 
     } catch (error: any) {
-        new NextResponse("Internal server error", {status:500})
+        return new NextResponse("Internal server error", {status:500})
     }
 }
