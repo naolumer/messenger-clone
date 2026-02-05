@@ -6,12 +6,12 @@ interface Iparams {
     conversationId?: string
 };
 
-export aysnc function POST (
-    request : Request, {params} : {params:Iparams}
+export async function POST (
+    request : Request, {params} : {params: Promise<Iparams>}
 ) {
     try {
         const currentUser = await getCurrentUser();
-        const {conversationId} = params;
+        const {conversationId} = await params;
 
         if (!currentUser?.id || !currentUser?.email) {
             return new NextResponse('Unauthorized', {status: 401})
@@ -58,6 +58,8 @@ export aysnc function POST (
                 }
             }
         })
+
+        return NextResponse.json(updatedMessage);
 
 
 
