@@ -4,6 +4,7 @@ import useOtherUser from "@/app/hooks/useOtherUser";
 import { Fragment, useMemo } from "react";
 import { format } from "date-fns";
 import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react";
+import { IoClose } from "react-icons/io5";
 
 interface ProfileDrawerProps {
     isOpen: boolean;
@@ -67,7 +68,31 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                             
                             <DialogPanel 
                                 className="pointer-events-auto w-screen max-w-md">
-
+                                <div className="flex h-full bg-white flex-col overflow-y-scroll py-6 shadow-xl">
+                                    <div className="px-4 sm:px-6">
+                                        <div className="flex items-start justify-end">
+                                            <div className="ml-3 flex h-7 items-center">
+                                                <button 
+                                                type="button" 
+                                                onClick={onClose}
+                                                className="
+                                                    rounded-md
+                                                    bg-white
+                                                    text-gray-400
+                                                    hover:text-gray-500
+                                                    focus:outline-none
+                                                    focus:ring-2
+                                                    focus:ring-sky-500
+                                                    focus:ring-offset-2">
+                                                    <span className="sr-only">
+                                                        Close panel
+                                                    </span>
+                                                    <IoClose size={24}/>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </DialogPanel>
                             
                         </TransitionChild>
