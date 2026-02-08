@@ -27,6 +27,7 @@ const Body: React.FC<BodyProps> = ({
             {messages.map((message,i )=>(
                 <MessageBox 
                     isLast= {i===messages.length-1}
+                    isFirst= {i===0}
                     key = {message.id}
                     data = {message} />
             ))}

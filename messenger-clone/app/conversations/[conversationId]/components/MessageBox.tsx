@@ -10,11 +10,13 @@ import Image from "next/image";
 interface MessageBoxProps {
     data: FullMessageType;
     isLast?:boolean
+    isFirst?: boolean
 }
 
 const MessageBox: React.FC<MessageBoxProps> = ({
     data,
-    isLast
+    isLast,
+    isFirst
 })=>{
     const session = useSession();
 
@@ -26,6 +28,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({
 
     const container = clsx(
         "group flex w-full gap-2 px-4 py-1.5",
+        isFirst && "mt-3",
         isOwn && "justify-end"
     );
 
@@ -43,11 +46,6 @@ const MessageBox: React.FC<MessageBoxProps> = ({
         "text-[15px] w-fit max-w-full overflow-hidden break-words shadow-sm",
         isOwn ? "bg-[#0084FF] text-white" : "bg-[#F0F0F0] text-gray-900",
         data.image ? "rounded-2xl p-0" : "rounded-2xl px-4 py-2.5"
-    );
-
-    const tail = clsx(
-        "absolute bottom-1 h-3 w-3 rotate-45",
-        isOwn ? "right-[-4px] bg-[#0084FF]" : "left-[-4px] bg-[#F0F0F0]"
     );
 
     return (
@@ -74,7 +72,6 @@ const MessageBox: React.FC<MessageBoxProps> = ({
                     </div>
                 )}
                 <div className="relative">
-                    {!data.image && <span className={tail} />}
                     <div className={message}>
                         {data.image ? (
                             <Image
