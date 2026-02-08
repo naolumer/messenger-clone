@@ -36,11 +36,13 @@ const UserList: React.FC<UserListProps> = ({
                 </div>
 
             </div>
-            {items.map((item)=> (
-                <UserBox 
-                    key = {item.id}
-                    data = {item}/>
-            ))}
+            <div className="space-y-2">
+                {items.map((item)=> (
+                    <UserBox 
+                        key = {item.id}
+                        data = {item}/>
+                ))}
+            </div>
 
         </div>
 
