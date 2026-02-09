@@ -73,3 +73,5 @@ const Modal: React.FC<ModalProps> = ({
         </Transition>
     )
 }
+
+export default Modal

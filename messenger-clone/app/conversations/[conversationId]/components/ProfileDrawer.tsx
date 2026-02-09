@@ -7,6 +7,7 @@ import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/re
 import { IoClose } from "react-icons/io5";
 import Avatar from "@/app/components/Avatar";
 import { IoTrash } from "react-icons/io5";
+import Modal from "@/app/components/Modal";
 
 interface ProfileDrawerProps {
     isOpen: boolean;
