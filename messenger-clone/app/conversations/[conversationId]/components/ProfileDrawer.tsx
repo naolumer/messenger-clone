@@ -8,6 +8,7 @@ import { IoClose } from "react-icons/io5";
 import Avatar from "@/app/components/Avatar";
 import { IoTrash } from "react-icons/io5";
 import Modal from "@/app/components/Modal";
+import { useState } from "react";
 
 interface ProfileDrawerProps {
     isOpen: boolean;
@@ -23,6 +24,8 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
     data
 })=>{
     const otherUser = useOtherUser(data);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const joinedDate = useMemo(()=>{
         return format(new Date(otherUser.createdAt), 'PP')
     
@@ -42,7 +45,14 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
 
     return (
         <>
-        <Modal isOpen />
+        <Modal 
+            isOpen= {isModalOpen}
+            onClose={()=> setIsModalOpen(false)}>
+            <div className="bg-white p-5">
+                <p>Hello Modal</p>
+            </div>
+        </Modal>
+
             <Transition show={isOpen} as={Fragment}>
                 <Dialog as="div" className="relative z-50" onClose={onClose}>
                     <TransitionChild 
@@ -113,14 +123,22 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                                                     {statusText}
                                                 </div>
                                                 <div className="flex gap-10 my-8">
-                                                    <div onClick={()=>{}}
-                                                        className="flex flex-col gap-3 items-center cursor-pointer hover:opacity-75">
-                                                        <div className="
-                                                            w-10 h-10
-                                                            bg-netutral-100
-                                                            rounded-full
-                                                            flex items-center
-                                                            justify-center">
+                                                    <div 
+                                                        onClick={()=>setIsModalOpen(true)}
+                                                        className="
+                                                            flex 
+                                                            flex-col 
+                                                            gap-3 
+                                                            items-center 
+                                                            cursor-pointer 
+                                                            hover:opacity-75">
+                                                        <div
+                                                            className="
+                                                                w-10 h-10
+                                                                bg-netutral-100
+                                                                rounded-full
+                                                                flex items-center
+                                                                justify-center">
                                                             
                                                         </div>
                                                         <div className="text-sm font-light text-neutral-600">
