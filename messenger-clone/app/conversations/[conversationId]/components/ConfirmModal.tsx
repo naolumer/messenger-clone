@@ -6,6 +6,10 @@ import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useCallback } from "react";
+import Modal from "@/app/components/Modal";
+import { FiAlertTriangle } from "react-icons/fi";
+import { DialogTitle } from "@headlessui/react";
+import Button from "@/app/components/Button";
 
 interface ConfirmModalProps {
     isOpen?: boolean;
@@ -31,9 +35,54 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
         .finally(()=> setIsloading(false))
     },[conversationId, router, onClose])
     return (
-        <div>
-            modal
+        <Modal isOpen={isOpen} onClose ={onClose}>
+            <div className="
+                mx-auto
+                flex
+                h-12
+                w-12
+                shrink-0
+                items-center
+                rounded-full
+                bg-red-100
+                sm:mx-0
+                sm:h-10
+                sm:w-10">
+                
+                <FiAlertTriangle className="h-6 w-6 text-red-600"/>
+            
+            <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                <DialogTitle as="h3" 
+                className="
+                    text-base
+                    font-semibold
+                    leading-6
+                    text-gray-900">
+                    
+                    Delete conversation
+
+                </DialogTitle>
+
+                <div className="mt-2">
+                    <p className="text-sm text-gray-500">
+                        Are you sure you want to delete this conversation? This action cannot be undone.
+                    </p>
+                </div>
+            </div>
         </div>
+        <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+            <Button disabled={isLoading} danger onClick={onDelete}>
+                Delete
+            </Button>
+            <Button disabled={isLoading}
+                    secondary
+                    onClick={onClose}>
+                Cancel
+
+            </Button>
+        </div>
+
+        </Modal>
     )
     
 }
