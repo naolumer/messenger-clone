@@ -19,6 +19,21 @@ interface SettingsModalProps {
 }
 
 const FALLBACK_AVATAR = "/Images/placeholder.png";
+const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "messenger";
+
+type CloudinaryUploadResult = {
+    info?: {
+        secure_url?: string;
+    } | string;
+};
+
+const getSecureUrl = (result: CloudinaryUploadResult) => {
+    if (result?.info && typeof result.info === "object" && "secure_url" in result.info) {
+        return result.info.secure_url;
+    }
+
+    return undefined;
+};
 
 const SettingsModal: React.FC<SettingsModalProps> = ({
     isOpen,
@@ -56,10 +71,20 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
         setAvatarSrc(nextAvatarSrc);
     }, [nextAvatarSrc]);
 
-    const handleUpload = (result: { info?: { secure_url?: string } }) => {
-        setValue("image", result?.info?.secure_url, {
+    const handleUpload = (result: CloudinaryUploadResult) => {
+        const secureUrl = getSecureUrl(result);
+
+        if (!secureUrl) {
+            toast.error("Image upload did not return a valid URL");
+            return;
+        }
+
+        setValue("image", secureUrl, {
             shouldValidate: true,
+            shouldDirty: true,
         });
+        setAvatarSrc(secureUrl);
+        toast.success("Image uploaded");
     };
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -120,7 +145,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                                     <CldUploadButton
                                         options={{ maxFiles: 1 }}
                                         onSuccess={handleUpload}
-                                        uploadPreset="g1usl1sb"
+                                        onError={() => toast.error("Cloudinary upload failed. Check your upload preset configuration.")}
+                                        uploadPreset={UPLOAD_PRESET}
                                         disabled={isLoading}
                                         className="flex justify-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 cursor-pointer hover:opacity-80"
                                     >
@@ -155,3 +181,4 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 };
 
 export default SettingsModal;
+
