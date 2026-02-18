@@ -6,6 +6,7 @@ import useConversation from "@/app/hooks/useConversation"
 import MessageBox from "./MessageBox"
 import axios from "axios"
 import { useEffect } from "react"
+import { pusherClient } from "@/app/libs/pusher"
 
 interface BodyProps {
     initialMessages : FullMessageType[]
@@ -21,7 +22,24 @@ const Body: React.FC<BodyProps> = ({
 
     useEffect(()=>{
         axios.post(`/api/conversations/${conversationId}/seen`)
-    },[conversationId])
+    },[conversationId]);
+
+    useEffect(()=> {
+        pusherClient.subscribe(conversationId);
+        bottomRef?.current?.scrollIntoView();
+
+        const messageHandler = (message: FullMessageType)=> {
+            
+        }
+
+        pusherClient.bind("messages:new",messagehandler);
+
+        return ()=> {
+            pusherClient.unsubscribe(conversationId);
+            pusherClient.unbind("messages:new", messageHandler)
+        }
+    }, [conversationId]);
+
     return (
         <div className="flex-1 overflow-y-auto">
             {messages.map((message,i )=>(
