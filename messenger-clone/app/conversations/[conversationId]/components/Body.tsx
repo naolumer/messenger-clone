@@ -7,6 +7,7 @@ import MessageBox from "./MessageBox"
 import axios from "axios"
 import { useEffect } from "react"
 import { pusherClient } from "@/app/libs/pusher"
+import find from "lodash"
 
 interface BodyProps {
     initialMessages : FullMessageType[]
@@ -29,14 +30,34 @@ const Body: React.FC<BodyProps> = ({
         bottomRef?.current?.scrollIntoView();
 
         const messageHandler = (message: FullMessageType)=> {
-            
-        }
+            axios.post(`/api/conversations/${conversationId}/seen`)
+            setMessages((current)=> {
+                if (find(current, {id:message.id})) {
+                    return current
+                }
+                return [...current, message];
+            });
+            bottomRef?.current?.scrollIntoView();
 
-        pusherClient.bind("messages:new",messagehandler);
+        };
+        const updateMessageHandler = (newMessage: FullMessageType) => {
+             setMessages((current) => current.map((currentMessage)=> {
+                if (currentMessage.id===newMessage.id) {
+                    return newMessage;
+                }
+                return currentMessage;
+             }))
+        };
+        
+         
+
+        pusherClient.bind("messages:new",messageHandler);
+        pusherClient.bind("message: update", updateMessageHandler)
 
         return ()=> {
             pusherClient.unsubscribe(conversationId);
-            pusherClient.unbind("messages:new", messageHandler)
+            pusherClient.unbind("messages:new", messageHandler);
+            pusherClient.unbind("messsage:update", updateMessageHandler)
         }
     }, [conversationId]);
 
