@@ -29,7 +29,28 @@ const getConversations = async () => {
             }
         });
 
-        return conversations
+        const uniqueConversations = conversations.filter((conversation, index, allConversations) => {
+            if (conversation.isGroup) {
+                return true;
+            }
+
+            const otherUserId = conversation.userIds.find((id) => id !== currentUser.id);
+
+            if (!otherUserId) {
+                return true;
+            }
+
+            return index === allConversations.findIndex((item) => {
+                if (item.isGroup) {
+                    return false;
+                }
+
+                const itemOtherUserId = item.userIds.find((id) => id !== currentUser.id);
+                return itemOtherUserId === otherUserId;
+            });
+        });
+
+        return uniqueConversations
 
     } catch (error:any) {
         return [];

@@ -7,7 +7,6 @@ import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/re
 import { IoClose } from "react-icons/io5";
 import Avatar from "@/app/components/Avatar";
 import { IoTrash } from "react-icons/io5";
-import Modal from "@/app/components/Modal";
 import { useState } from "react";
 import ConfirmModal from "./ConfirmModal";
 import AvatarGroup from "@/app/components/AvatarGroups";
@@ -46,11 +45,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
 
     return (
         <>
-            <ConfirmModal isOpen={confirmOpen} onClose={() => setConfirmOpen(false)}>
-                <div className="bg-white p-5">
-                    <p>Hello Modal</p>
-                </div>
-            </ConfirmModal>
+            <ConfirmModal isOpen={confirmOpen} onClose={() => setConfirmOpen(false)} />
 
             <Transition show={isOpen} as={Fragment}>
                 <Dialog as="div" className="relative z-50" onClose={onClose}>

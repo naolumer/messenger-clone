@@ -147,7 +147,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                                         onSuccess={handleUpload}
                                         onError={() => toast.error("Cloudinary upload failed. Check your upload preset configuration.")}
                                         uploadPreset={UPLOAD_PRESET}
-                                        disabled={isLoading}
                                         className="flex justify-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 cursor-pointer hover:opacity-80"
                                     >
                                         Change

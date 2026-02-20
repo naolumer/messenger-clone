@@ -1,6 +1,7 @@
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb"
+import { pusherServer } from "@/app/libs/pusher";
 
 export async  function POST(
     request : Request
@@ -23,6 +24,10 @@ export async  function POST(
             return new NextResponse('Invalid data', {status:401});
          }
 
+         if (!isGroup && !userId) {
+            return new NextResponse("Invalid data", { status: 400 });
+         }
+
          if (isGroup) {
             const newConversation = await prisma.conversation.create({
                 data : {
@@ -43,27 +48,42 @@ export async  function POST(
                     users: true
                 }
             });
+
+            newConversation.users.forEach((user) => {
+                if (user.email) {
+                    pusherServer.trigger(user.email, 'conversation:new', newConversation)
+                }
+            })
             return NextResponse.json(newConversation);
          }
 
-         const existingConversations = await prisma.conversation.findMany({
-            where : {
+         const singleConversation = await prisma.conversation.findFirst({
+            where: {
                 OR: [
                     {
+                        isGroup: false
+                    },
+                    {
+                        isGroup: null
+                    }
+                ],
+                AND: [
+                    {
                         userIds: {
-                            equals: [currentUser.id, userId]
+                            has: currentUser.id
                         }
                     },
                     {
-                        userIds : {
-                            equals : [userId, currentUser.id]
+                        userIds: {
+                            has: userId
                         }
                     }
                 ]
+            },
+            orderBy: {
+                lastMessageAt: "desc"
             }
          });
-
-         const singleConversation = existingConversations[0];
 
          if (singleConversation) {
             return NextResponse.json(singleConversation);
@@ -71,6 +91,7 @@ export async  function POST(
 
          const newConversation = await prisma.conversation.create({
             data : {
+                isGroup: false,
                 users: {
                     connect: [
                         {
@@ -81,8 +102,19 @@ export async  function POST(
                         }
                     ]
                 }
+            },
+            include: {
+                users: true
+            }
+         });
+
+         newConversation.users.map((user)=> {
+            if( user.email) {
+                pusherServer.trigger(user.email, "conversation:new", newConversation)
             }
          })
+
+         return NextResponse.json(newConversation);
 
 
     } catch (error:any) {

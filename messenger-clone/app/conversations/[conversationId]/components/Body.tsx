@@ -7,7 +7,7 @@ import MessageBox from "./MessageBox"
 import axios from "axios"
 import { useEffect } from "react"
 import { pusherClient } from "@/app/libs/pusher"
-import find from "lodash"
+import find from "lodash/find"
 
 interface BodyProps {
     initialMessages : FullMessageType[]
@@ -52,12 +52,12 @@ const Body: React.FC<BodyProps> = ({
          
 
         pusherClient.bind("messages:new",messageHandler);
-        pusherClient.bind("message: update", updateMessageHandler)
+        pusherClient.bind("message:update", updateMessageHandler)
 
         return ()=> {
             pusherClient.unsubscribe(conversationId);
             pusherClient.unbind("messages:new", messageHandler);
-            pusherClient.unbind("messsage:update", updateMessageHandler)
+            pusherClient.unbind("message:update", updateMessageHandler)
         }
     }, [conversationId]);
 

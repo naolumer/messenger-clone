@@ -19,6 +19,10 @@ const UserBox: React.FC<UserBoxProps> = ({
     const [isLoading, setIsLoading] = useState(false);
 
     const handleClick = useCallback(()=>{
+        if (isLoading) {
+            return;
+        }
+
         setIsLoading(true);
 
         axios.post("/api/conversations",{
