@@ -27,7 +27,7 @@ const LoadingModal = ()=>{
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0">
                     <div 
-                        className="fixed inset-0 bg-gray-100 bg-opacity-50 transition-opacity"/>
+                        className="fixed inset-0 bg-black/30 backdrop-blur-[1px] transition-opacity"/>
 
                 </TransitionChild>
                 <div className="
