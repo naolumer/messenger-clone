@@ -8,14 +8,23 @@ export default async function handler (
     request: NextApiRequest,
     response: NextApiResponse
 ) {
+    if (request.method !== "POST") {
+        return response.status(405).end();
+    }
+
     const session = await getServerSession(request, response, authOptions);
 
     if (!session?.user?.email) {
         return response.status(401).end();
     }
 
-    const socketId = request.body.socket_id
-    const channel = request.body.channel_name;
+    const parsedBody =
+        typeof request.body === "string"
+            ? Object.fromEntries(new URLSearchParams(request.body))
+            : request.body || {};
+
+    const socketId = parsedBody.socket_id;
+    const channel = parsedBody.channel_name;
 
     if (!socketId || !channel) {
         return response.status(400).send("Invalid request");
