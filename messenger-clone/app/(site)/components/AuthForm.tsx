@@ -53,7 +53,13 @@ function AuthForm() {
 
         if (variant === 'REGISTER') {
             axios.post("/api/register", data)
-            .then(() => signIn('credentials', data))
+            .then(() =>
+                signIn("credentials", {
+                    ...data,
+                    callbackUrl: "/users",
+                    redirect: true,
+                })
+            )
             .catch(()=>toast.error("Something went wrong!"))
             .finally(
             ()=>setIsLoading(false)
@@ -63,16 +69,18 @@ function AuthForm() {
         if (variant === 'LOGIN') {
              signIn('credentials',{
                 ...data,
-                redirect:false
+                callbackUrl: "/users",
+                redirect: false
              })
              .then((callback)=>{
                 if (callback?.error) {
                     toast.error('Invalid credentials')
+                    return;
                 }
 
                 if(callback?.ok && !callback?.error) {
                     toast.success('Logged in!')
-                    router.push("/users")
+                    window.location.href = callback.url || "/users";
                 }
              })
              .finally(() => setIsLoading(false))
@@ -82,14 +90,10 @@ function AuthForm() {
     const socialAction  = (action:string) => {
         setIsLoading(true);
 
-        signIn(action, {redirect: false})
+        signIn(action, { callbackUrl: "/users", redirect: true })
         .then((callback)=>{
             if(callback?.error) {
                 toast.error('Invalid Credentials')
-            }
-            if (callback?.ok && !callback?.error){
-                toast.success('Logged in!')
-                
             }
         })
         .finally(()=>setIsLoading(false))
