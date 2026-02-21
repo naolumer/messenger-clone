@@ -24,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({
     const otherUser = useOtherUser(conversation);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const {members} = useActiveList();
-    const isActive = members.indexOf(otherUser?.email!) !== -1;
+    const isActive = !!otherUser?.email && members.includes(otherUser.email);
 
     const statusText = useMemo (()=>{
         

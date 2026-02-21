@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import {getServerSession} from "next-auth"
 
 import { pusherServer } from "@/app/libs/pusher";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "../auth/[...nextauth]";
 
 export default async function handler (
     request: NextApiRequest,
@@ -11,11 +11,16 @@ export default async function handler (
     const session = await getServerSession(request, response, authOptions);
 
     if (!session?.user?.email) {
-        return response.status(401);
+        return response.status(401).end();
     }
 
     const socketId = request.body.socket_id
     const channel = request.body.channel_name;
+
+    if (!socketId || !channel) {
+        return response.status(400).send("Invalid request");
+    }
+
     const data = {
         user_id: session.user.email    
     };
