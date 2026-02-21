@@ -3,6 +3,7 @@
 import { User } from "@prisma/client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import useActiveList from "../hooks/useActiveList";
 
 interface AvatarProps {
     user?: User;
@@ -12,6 +13,8 @@ const FALLBACK_AVATAR = "/Images/placeholder.png";
 
 const Avatar: React.FC<AvatarProps> = ({ user }) => {
     const [imgSrc, setImgSrc] = useState(user?.image || FALLBACK_AVATAR);
+    const {members} = useActiveList();
+    const isActive = members.indexOf(user?.email!) !== -1;
 
     useEffect(() => {
         setImgSrc(user?.image || FALLBACK_AVATAR);
@@ -31,7 +34,8 @@ const Avatar: React.FC<AvatarProps> = ({ user }) => {
             >
                 <Image src={imgSrc} alt="Avatar" fill onError={() => setImgSrc(FALLBACK_AVATAR)} />
             </div>
-            <span
+            {isActive && (
+                <span
                 className="
                     absolute
                     block
@@ -47,6 +51,8 @@ const Avatar: React.FC<AvatarProps> = ({ user }) => {
                     md:w-3
                 "
             ></span>
+            )}
+            
         </div>
     );
 };
