@@ -41,6 +41,7 @@ function AuthForm() {
             errors
         }
     } = useForm<FieldValues>({
+       
         defaultValues : {
             name: '',
             email : '',
@@ -88,6 +89,7 @@ function AuthForm() {
     }
 
     const socialAction  = (action:string) => {
+        
         setIsLoading(true);
 
         signIn(action, { callbackUrl: "/users", redirect: true })
